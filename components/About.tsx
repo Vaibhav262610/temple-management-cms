@@ -1,73 +1,121 @@
-export default function About() {
-	return (
-		<section className="py-20 bg-white">
-			<div className="max-w-7xl mx-auto px-4">
-				<div className="text-center mb-12">
-					<h2 className="text-4xl font-bold text-gray-900 mb-4">
-						About Shirdi Sai Baba
-					</h2>
-					<div className="w-24 h-1 bg-red-700 mx-auto"></div>
-				</div>
+"use client";
+import { useState, useEffect, useRef } from "react";
 
-				<div className="grid lg:grid-cols-2 gap-12 items-center">
-					{/* Image placeholder */}
-					<div className="relative">
-						<div className="aspect-[4/3] bg-gradient-to-br from-orange-300 to-red-400 rounded-2xl shadow-xl flex items-center justify-center">
-							<div className="text-center text-white">
-								<div className="text-8xl mb-4">🕉️</div>
-								<p className="text-2xl font-bold">Sai Baba Image</p>
+export default function About() {
+	const [count, setCount] = useState(0);
+	const [hasAnimated, setHasAnimated] = useState(false);
+	const counterRef = useRef<HTMLDivElement>(null);
+
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				if (entries[0].isIntersecting && !hasAnimated) {
+					setHasAnimated(true);
+					let start = 0;
+					const end = 25;
+					const duration = 2000;
+					const increment = end / (duration / 16);
+
+					const timer = setInterval(() => {
+						start += increment;
+						if (start >= end) {
+							setCount(end);
+							clearInterval(timer);
+						} else {
+							setCount(Math.floor(start));
+						}
+					}, 16);
+				}
+			},
+			{ threshold: 0.5 }
+		);
+
+		if (counterRef.current) {
+			observer.observe(counterRef.current);
+		}
+
+		return () => observer.disconnect();
+	}, [hasAnimated]);
+
+	return (
+		<section className="section pt-0">
+			<div className="container mx-auto px-4">
+				<div className="grid lg:grid-cols-12 gap-0">
+					{/* Left side - Counter */}
+					<div className="lg:col-span-5 hidden lg:block">
+						<div
+							ref={counterRef}
+							className="bg-cover bg-center bg-norepeat relative overflow-hidden h-full"
+							style={{
+								backgroundImage:
+									"url(https://images.pexels.com/photos/5243162/pexels-photo-5243162.jpeg)",
+							}}>
+							<div className="absolute inset-0 bg-primary/85"></div>
+							<div className="relative z-10 h-full flex flex-col items-center justify-center text-white p-12 min-h-[400px]">
+								<h4 className="text-7xl font-bold mb-3">
+									<b className="counter">{count}</b>
+									<span className="text-5xl ml-1">+</span>
+								</h4>
+								<p className="text-xl">Devotees Served</p>
 							</div>
 						</div>
 					</div>
 
-					{/* Content */}
-					<div>
-						<h3 className="text-3xl font-bold text-gray-900 mb-6">
-							The Life and Teachings of Sai Baba
-						</h3>
-						<p className="text-gray-600 mb-4 leading-relaxed">
-							Shirdi Sai Baba was an Indian spiritual master who is regarded by
-							his devotees as a saint, fakir, and satguru. He is revered by both
-							Hindu and Muslim devotees and during his lifetime, he was critical
-							of both faiths.
-						</p>
-						<p className="text-gray-600 mb-6 leading-relaxed">
-							Sai Baba taught a moral code of love, forgiveness, helping others,
-							charity, contentment, inner peace, and devotion to God and guru.
-							His philosophy was Advaita Vedanta and his teachings consisted of
-							elements both of this school as well as of bhakti and Islam.
+					{/* Right side - Content */}
+					<div className="lg:col-span-7 lg:pl-12">
+						<div className="section-title mb-0 text-start">
+							<p className="subtitle mb-3">Serving the Hindu Community</p>
+							<h4 className="title mb-6">
+								We Are Devotees of Shri Shirdi Sai Baba.
+							</h4>
+						</div>
+						<p className="text-gray-700 mb-8 leading-relaxed bg-transparent border-l-4 border-gray-200 pl-4">
+							Sabka Malik Ek – God is One. We are devotees of Shri Shirdi Sai
+							Baba, following His teachings of love, compassion, and service to
+							humanity.
 						</p>
 
-						<div className="space-y-3">
-							<div className="flex items-start gap-3">
-								<div className="w-6 h-6 bg-red-700 rounded-full flex items-center justify-center text-white text-xs flex-shrink-0 mt-1">
-									✓
+						<div className="grid md:grid-cols-2 gap-8 mb-8">
+							<div className="flex items-start gap-4">
+								<div className="flex-shrink-0">
+									<div className="w-14 h-14 flex items-center justify-center">
+										<i className="flaticon-temple text-primary text-4xl"></i>
+									</div>
 								</div>
-								<p className="text-gray-700">
-									Promoted religious tolerance and harmony
-								</p>
+								<div>
+									<h5 className="text-xl font-bold text-gray-900 mb-2">
+										Temple
+									</h5>
+									<p className="text-gray-600 leading-relaxed">
+										Support our charitable activities and community service
+										programs inspired by Sai Baba's teachings
+									</p>
+								</div>
 							</div>
-							<div className="flex items-start gap-3">
-								<div className="w-6 h-6 bg-red-700 rounded-full flex items-center justify-center text-white text-xs flex-shrink-0 mt-1">
-									✓
+
+							<div className="flex items-start gap-4">
+								<div className="flex-shrink-0">
+									<div className="w-14 h-14 flex items-center justify-center">
+										<i className="flaticon-powder-1 text-primary text-4xl"></i>
+									</div>
 								</div>
-								<p className="text-gray-700">
-									Emphasized selfless service to humanity
-								</p>
-							</div>
-							<div className="flex items-start gap-3">
-								<div className="w-6 h-6 bg-red-700 rounded-full flex items-center justify-center text-white text-xs flex-shrink-0 mt-1">
-									✓
+								<div>
+									<h5 className="text-xl font-bold text-gray-900 mb-2">
+										Donation
+									</h5>
+									<p className="text-gray-600 leading-relaxed">
+										Support our charitable activities and community service
+										programs inspired by Sai Baba's teachings
+									</p>
 								</div>
-								<p className="text-gray-700">
-									Taught the path of devotion and surrender
-								</p>
 							</div>
 						</div>
 
-						<button className="mt-8 bg-red-700 text-white px-8 py-3 rounded-lg hover:bg-red-800 transition">
-							Learn More
-						</button>
+						<a
+							href="#"
+							className="inline-flex items-center gap-2 bg-white border border-gray-300 text-gray-900 px-8 py-3 rounded font-semibold hover:bg-gray-50 transition">
+							Learn More <i className="far fa-arrow-right"></i>
+						</a>
 					</div>
 				</div>
 			</div>

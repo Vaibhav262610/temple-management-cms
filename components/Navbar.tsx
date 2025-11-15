@@ -12,26 +12,26 @@ export default function Navbar() {
 				<div className="max-w-7xl mx-auto px-4 flex justify-between items-center text-sm">
 					<div className="flex items-center gap-6">
 						<span className="flex items-center gap-2 text-gray-600">
-							📞 +1 (630) 897-1600
+							📞 (+1) 630-897-1500
 						</span>
 						<span className="flex items-center gap-2 text-gray-600">
 							✉️ PR@SAISAMSTHANUSA.ORG
 						</span>
 					</div>
 					<div className="flex items-center gap-4">
-						<Link href="#" className="text-gray-600 hover:text-red-700">
+						<Link href="#" className="text-gray-600 hover:text-primary text-sm">
 							EVENT
 						</Link>
-						<Link href="#" className="text-gray-600 hover:text-red-700">
-							HOURS
+						<Link href="#" className="text-gray-600 hover:text-primary text-sm">
+							HOLIS
 						</Link>
-						<Link href="#" className="text-gray-600 hover:text-red-700">
+						<Link href="#" className="text-gray-600 hover:text-primary text-sm">
 							PUJA
 						</Link>
-						<Link href="#" className="text-gray-600 hover:text-red-700">
-							LIVE
+						<Link href="#" className="text-gray-600 hover:text-primary text-sm flex items-center gap-1">
+							🔴 LIVE
 						</Link>
-						<Link href="#" className="text-gray-600 hover:text-red-700">
+						<Link href="#" className="text-gray-600 hover:text-primary text-sm flex items-center gap-1">
 							🇺🇸 LANGUAGE
 						</Link>
 					</div>
@@ -44,7 +44,7 @@ export default function Navbar() {
 					<div className="flex justify-between items-center h-20">
 						<div className="flex items-center gap-3">
 							<div className="text-3xl">🕉️</div>
-							<span className="text-xl font-bold text-[#7d5a6e]">
+							<span className="text-xl font-bold text-primary">
 								Sai Samsthan USA
 							</span>
 						</div>
@@ -52,40 +52,40 @@ export default function Navbar() {
 						<div className="hidden lg:flex items-center gap-8">
 							<Link
 								href="#home"
-								className="text-gray-700 hover:text-red-700 font-medium">
+								className="text-gray-700 hover:text-primary font-medium">
 								HOME
 							</Link>
 							<Link
 								href="#about"
-								className="text-gray-700 hover:text-red-700 font-medium">
+								className="text-gray-700 hover:text-primary font-medium">
 								ABOUT
 							</Link>
 							<Link
 								href="#blog"
-								className="text-gray-700 hover:text-red-700 font-medium">
+								className="text-gray-700 hover:text-primary font-medium">
 								BLOG
 							</Link>
 							<Link
 								href="#pages"
-								className="text-gray-700 hover:text-red-700 font-medium">
+								className="text-gray-700 hover:text-primary font-medium">
 								PAGES
 							</Link>
 							<Link
 								href="#service"
-								className="text-gray-700 hover:text-red-700 font-medium">
+								className="text-gray-700 hover:text-primary font-medium">
 								SERVICE
 							</Link>
 							<Link
 								href="#donation"
-								className="text-gray-700 hover:text-red-700 font-medium">
+								className="text-gray-700 hover:text-primary font-medium">
 								DONATION
 							</Link>
 							<Link
 								href="#contact"
-								className="text-gray-700 hover:text-red-700 font-medium">
+								className="text-gray-700 hover:text-primary font-medium">
 								CONTACT
 							</Link>
-							<button className="bg-[#7d5a6e] text-white px-6 py-3 rounded-lg font-semibold hover:bg-[#6d4a5e] transition">
+							<button className="bg-primary text-white px-6 py-3 rounded-lg font-semibold hover:bg-primary-dark transition">
 								DONATE HERE
 							</button>
 						</div>

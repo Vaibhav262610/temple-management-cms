@@ -3,22 +3,25 @@ export default function Footer() {
 		{
 			date: "May 20, 2025",
 			title: "As we've all discovered by now, the world can change",
-			image: "🏛️",
+			image:
+				"https://images.pexels.com/photos/27023262/pexels-photo-27023262.jpeg",
 		},
 		{
 			date: "May 20, 2025",
 			title: "Testimony love offering so blessed",
-			image: "🙏",
+			image:
+				"https://images.pexels.com/photos/933624/pexels-photo-933624.jpeg",
 		},
 		{
 			date: "May 20, 2025",
 			title: "As we've all discovered by now, the world can change",
-			image: "📿",
+			image:
+				"https://images.pexels.com/photos/28808373/pexels-photo-28808373.jpeg",
 		},
 	];
 
 	return (
-		<footer className="bg-[#7d5a6e] text-white">
+		<footer className="bg-primary text-white">
 			<div className="max-w-7xl mx-auto px-4 py-12">
 				<div className="grid md:grid-cols-4 gap-8">
 					<div>
@@ -29,13 +32,13 @@ export default function Footer() {
 						</p>
 						<div className="space-y-3 text-sm">
 							<p className="flex items-center gap-2">
-								<span>📞</span> +1 (630) 897-1600
+								<span>📞</span> +1 (630) 897-1500
 							</p>
 							<p className="flex items-center gap-2">
 								<span>✉️</span> pr@saisamsthanusa.org
 							</p>
 							<p className="flex items-center gap-2">
-								<span>📍</span> 1120 Eaton Lane, Aurora, IL 60502 USA
+								<span>📍</span> 1101 Foran Lane, Aurora, IL 60506 USA
 							</p>
 						</div>
 					</div>
@@ -134,8 +137,12 @@ export default function Footer() {
 						<div className="space-y-4">
 							{recentPosts.map((post, index) => (
 								<div key={index} className="flex gap-3">
-									<div className="w-16 h-16 bg-white/20 rounded flex items-center justify-center text-2xl flex-shrink-0">
-										{post.image}
+									<div className="w-16 h-16 bg-white/20 rounded overflow-hidden flex-shrink-0">
+										<img
+											src={post.image}
+											alt={post.title}
+											className="w-full h-full object-cover"
+										/>
 									</div>
 									<div>
 										<p className="text-xs text-white/60 mb-1">📅 {post.date}</p>
@@ -150,10 +157,10 @@ export default function Footer() {
 				</div>
 			</div>
 
-			<div className="bg-[#6d4a5e] py-4">
+			<div className="bg-primary-dark py-4">
 				<div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
 					<p className="text-sm text-white/80">
-						COPYRIGHT © SHRI SHIRDI SAI BABA MANDIR - 2025
+						Copyright © Shri Shirdi Sai Baba Mandir - 2025
 					</p>
 					<div className="flex gap-3">
 						<a

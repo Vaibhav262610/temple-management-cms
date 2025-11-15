@@ -3,24 +3,110 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+  
+  /* Temple theme colors - Exact match from reference */
+  --primary: #8b5d6b;
+  --primary-dark: #6d4a5e;
+  --primary-light: #9d6e7c;
+  --accent-red: #e74c3c;
+  --accent-coral: #e74c3c;
+  --cream: #fef3f2;
+  --light-bg: #f8f9fa;
+  --section-padding: 80px;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-dark: var(--primary-dark);
+  --color-primary-light: var(--primary-light);
+  --color-accent-red: var(--accent-red);
+  --color-accent-coral: var(--accent-coral);
+  --color-cream: var(--cream);
+  --color-light-bg: var(--light-bg);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Section spacing */
+.section {
+  padding-top: var(--section-padding);
+  padding-bottom: var(--section-padding);
+}
+
+.section-padding {
+  padding-top: var(--section-padding);
+  padding-bottom: var(--section-padding);
+}
+
+.pt-0 {
+  padding-top: 0 !important;
+}
+
+/* Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out;
+}
+
+/* Hover effects */
+.group:hover .group-hover\:scale-110 {
+  transform: scale(1.1);
+}
+
+.group:hover .group-hover\:scale-125 {
+  transform: scale(1.25);
+}
+
+/* Custom utilities */
+@utility subtitle {
+  color: var(--color-primary);
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+@utility title {
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--color-foreground);
+}
+
+/* Flaticon placeholder */
+.flaticon-right-quote::before {
+  content: '"';
+  font-size: inherit;
+  font-family: Georgia, serif;
+}
+
+.flaticon-temple::before,
+.flaticon-arti::before,
+.flaticon-pooja::before,
+.flaticon-powder-1::before {
+  content: '🕉';
+  font-size: inherit;
 }

@@ -1,12 +1,13 @@
 import Hero from "@/components/Hero";
+import ServiceCards from "@/components/ServiceCards";
 import About from "@/components/About";
-import Stats from "@/components/Stats";
-import Services from "@/components/Services";
+import NewsletterCTA from "@/components/NewsletterCTA";
 import DonationCTA from "@/components/DonationCTA";
-import Events from "@/components/Events";
+import VideoBroadcast from "@/components/VideoBroadcast";
 import Gallery from "@/components/Gallery";
+import Volunteers from "@/components/Volunteers";
 import Testimonials from "@/components/Testimonials";
-import Contact from "@/components/Contact";
+import Events from "@/components/Events";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -15,14 +16,15 @@ export default function Home() {
 		<div className="min-h-screen">
 			<Navbar />
 			<Hero />
+			<ServiceCards />
 			<About />
-			<Stats />
-			<Services />
+			<NewsletterCTA />
 			<DonationCTA />
-			<Events />
+			<VideoBroadcast />
 			<Gallery />
+			<Volunteers />
 			<Testimonials />
-			<Contact />
+			<Events />
 			<Footer />
 		</div>
 	);
