@@ -1,0 +1,17 @@
+{
+  "name": "saisamsthanusa",
+  "version": "1.0.0",
+  "description": "Unified static website for Maharatri Temple with shared assets and navigation",
+  "main": "index.html",
+  "scripts": {
+    "serve": "npx live-server --port=3000 --open=/index.html",
+    "dev": "npx live-server --port=3000 --open=/index.html",
+    "start": "npx live-server --port=3000 --open=/index.html"
+  },
+  "keywords": ["temple", "hindu", "static", "website", "html", "css", "javascript"],
+  "author": "Aaron",
+  "license": "ISC",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}

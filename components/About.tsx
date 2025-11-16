@@ -45,11 +45,13 @@ export default function About() {
 					<div className="lg:col-span-5 hidden lg:block">
 						<div
 							ref={counterRef}
-							className="bg-cover bg-center bg-norepeat relative overflow-hidden h-full"
-							style={{
-								backgroundImage:
-									"url(https://images.pexels.com/photos/5243162/pexels-photo-5243162.jpeg)",
-							}}>
+							className="relative overflow-hidden h-full">
+							<img
+								src="https://images.pexels.com/photos/5243162/pexels-photo-5243162.jpeg?auto=compress&cs=tinysrgb&w=800"
+								alt="Temple"
+								className="absolute inset-0 w-full h-full object-cover"
+								loading="lazy"
+							/>
 							<div className="absolute inset-0 bg-primary/85"></div>
 							<div className="relative z-10 h-full flex flex-col items-center justify-center text-white p-12 min-h-[400px]">
 								<h4 className="text-7xl font-bold mb-3">

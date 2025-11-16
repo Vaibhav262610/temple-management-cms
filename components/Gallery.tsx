@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import OptimizedImage from "./OptimizedImage";
 
 export default function Gallery() {
 	const [activeFilter, setActiveFilter] = useState("*");
@@ -104,11 +105,10 @@ export default function Gallery() {
 							key={index}
 							className="group relative overflow-hidden bg-white shadow-md hover:shadow-xl transition-all">
 							<div className="aspect-[4/5] overflow-hidden">
-								<img
-									src={puja.image}
+								<OptimizedImage
+									src={`${puja.image}${puja.image.includes('?') ? '&' : '?'}auto=compress&cs=tinysrgb&w=600`}
 									alt={`${puja.title} - ${puja.attribution}`}
-									className="w-full h-full object-cover"
-									style={{ backgroundColor: "#E27415" }}
+									className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
 								/>
 							</div>
 							<div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">

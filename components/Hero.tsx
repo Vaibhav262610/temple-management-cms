@@ -1,8 +1,10 @@
 "use client";
 import { useState, useEffect } from "react";
+import OptimizedImage from "./OptimizedImage";
 
 export default function Hero() {
 	const [currentSlide, setCurrentSlide] = useState(0);
+	const [isLoading, setIsLoading] = useState(true);
 
 	const slides = [
 		{
@@ -39,12 +41,22 @@ export default function Hero() {
 	const currentSlideData = slides[currentSlide];
 
 	return (
-		<div
-			className="relative min-h-screen bg-cover bg-center bg-norepeat"
-			style={{
-				backgroundImage:
-					"url(https://images.pexels.com/photos/8773931/pexels-photo-8773931.jpeg)",
-			}}>
+		<div className="relative min-h-screen bg-gray-900 overflow-hidden">
+			{/* Background Image with loading state */}
+			<div className="absolute inset-0">
+				{isLoading && (
+					<div className="absolute inset-0 bg-gray-800 animate-pulse" />
+				)}
+				<img
+					src="https://images.pexels.com/photos/8773931/pexels-photo-8773931.jpeg?auto=compress&cs=tinysrgb&w=1920"
+					alt="Temple Background"
+					className={`w-full h-full object-cover transition-opacity duration-500 ${
+						isLoading ? "opacity-0" : "opacity-100"
+					}`}
+					onLoad={() => setIsLoading(false)}
+					loading="eager"
+				/>
+			</div>
 			{/* Overlay */}
 			<div className="absolute inset-0 bg-black/30"></div>
 
@@ -102,15 +114,15 @@ export default function Hero() {
 									? "lg:col-start-1 lg:row-start-1 justify-start"
 									: "justify-end"
 							}`}>
-							<img
-								src={currentSlideData.image}
+							<OptimizedImage
+								src={`${currentSlideData.image}?auto=compress&cs=tinysrgb&w=800`}
 								alt="Shirdi Sai Baba"
 								className={`${
 									currentSlideData.imagePosition === "right"
 										? "w-1/2 mt-0"
 										: "w-full max-w-md"
 								} h-auto object-cover`}
-								style={{ backgroundColor: "#CE9438" }}
+								priority={currentSlide === 0}
 							/>
 						</div>
 					</div>
