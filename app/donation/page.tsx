@@ -1,11 +1,98 @@
+"use client";
+
+import { useState } from "react";
 import TempleLayout from "@/components/TempleLayout";
+import { submitDonation, type DonationForm } from "@/lib/api";
 
 export default function Donation() {
+	const [formData, setFormData] = useState<DonationForm>({
+		name: "",
+		email: "",
+		phone: "",
+		amount: 51,
+		custom_amount: undefined,
+		message: "",
+	});
+	const [selectedAmount, setSelectedAmount] = useState<string>("51");
+	const [loading, setLoading] = useState(false);
+	const [success, setSuccess] = useState(false);
+	const [error, setError] = useState("");
+
+	const handleAmountChange = (amount: string) => {
+		setSelectedAmount(amount);
+		if (amount === "custom") {
+			setFormData({ ...formData, amount: 0 });
+		} else {
+			setFormData({
+				...formData,
+				amount: parseInt(amount),
+				custom_amount: undefined,
+			});
+		}
+	};
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		setLoading(true);
+		setError("");
+		setSuccess(false);
+
+		// Validate amount
+		const finalAmount =
+			selectedAmount === "custom" ? formData.custom_amount : formData.amount;
+		if (!finalAmount || finalAmount <= 0) {
+			setError("Please enter a valid donation amount");
+			setLoading(false);
+			return;
+		}
+
+		try {
+			const donationData = {
+				...formData,
+				amount: finalAmount,
+			};
+			await submitDonation(donationData);
+			setSuccess(true);
+			setFormData({
+				name: "",
+				email: "",
+				phone: "",
+				amount: 51,
+				custom_amount: undefined,
+				message: "",
+			});
+			setSelectedAmount("51");
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		} catch (err: any) {
+			setError(err.message || "Failed to process donation");
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	return (
 		<TempleLayout title="Make a Donation">
 			{/* Donation Intro */}
 			<div className="section section-padding">
 				<div className="container">
+					{success && (
+						<div className="alert alert-success mb-4" role="alert">
+							<h4 className="alert-heading">Thank You for Your Donation!</h4>
+							<p>
+								Your generous contribution will help us continue our mission of
+								service and spirituality. You will receive a confirmation email
+								shortly.
+							</p>
+						</div>
+					)}
+
+					{error && (
+						<div className="alert alert-danger mb-4" role="alert">
+							<h4 className="alert-heading">Error</h4>
+							<p>{error}</p>
+						</div>
+					)}
+
 					<div className="row align-items-center">
 						<div className="col-lg-6">
 							<div className="section-title">
@@ -42,77 +129,8 @@ export default function Donation() {
 				</div>
 			</div>
 
-			{/* Donation Options */}
-			<div className="section pt-0">
-				<div className="container">
-					<div className="section-title text-center">
-						<p className="subtitle">Ways to Donate</p>
-						<h4 className="title">Choose Your Donation Method</h4>
-					</div>
-					<div className="row">
-						<div className="col-lg-4 col-md-6">
-							<div className="sigma_service style-2">
-								<div className="sigma_service-thumb">
-									<img src="/temple/assets/img/donation/5.jpg" alt="donation" />
-								</div>
-								<div className="sigma_service-body">
-									<h5>General Donation</h5>
-									<p>Support overall temple operations and maintenance</p>
-									<div className="sigma_service-progress">
-										<div className="progress-content">
-											<p>Goal: $100,000</p>
-										</div>
-									</div>
-									<a href="#" className="sigma_btn-custom">
-										Donate Now
-									</a>
-								</div>
-							</div>
-						</div>
-						<div className="col-lg-4 col-md-6">
-							<div className="sigma_service style-2">
-								<div className="sigma_service-thumb">
-									<img src="/temple/assets/img/donation/6.jpg" alt="donation" />
-								</div>
-								<div className="sigma_service-body">
-									<h5>Puja Sponsorship</h5>
-									<p>Sponsor special pujas and ceremonies</p>
-									<div className="sigma_service-progress">
-										<div className="progress-content">
-											<p>Starting from $51</p>
-										</div>
-									</div>
-									<a href="#" className="sigma_btn-custom">
-										Sponsor Puja
-									</a>
-								</div>
-							</div>
-						</div>
-						<div className="col-lg-4 col-md-6">
-							<div className="sigma_service style-2">
-								<div className="sigma_service-thumb">
-									<img src="/temple/assets/img/donation/7.jpg" alt="donation" />
-								</div>
-								<div className="sigma_service-body">
-									<h5>Community Service</h5>
-									<p>Support charitable and welfare programs</p>
-									<div className="sigma_service-progress">
-										<div className="progress-content">
-											<p>Any Amount</p>
-										</div>
-									</div>
-									<a href="#" className="sigma_btn-custom">
-										Contribute
-									</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-
 			{/* Donation Form */}
-			<div className="section section-padding light-bg">
+			<div className="section section-padding light-bg pt-0">
 				<div className="container">
 					<div className="row">
 						<div className="col-lg-8 mx-auto">
@@ -121,100 +139,152 @@ export default function Donation() {
 									<h4 className="title">Make Your Donation</h4>
 									<p>Fill out the form below to complete your donation</p>
 								</div>
-								<form>
+								<form onSubmit={handleSubmit}>
 									<div className="row">
 										<div className="col-lg-12">
 											<div className="form-group">
-												<label>Donation Amount</label>
+												<label>Donation Amount *</label>
 												<div className="sigma_donation-amount-wrapper">
 													<input
 														type="radio"
 														name="amount"
 														id="amount1"
 														value="51"
+														checked={selectedAmount === "51"}
+														onChange={(e) => handleAmountChange(e.target.value)}
 													/>
 													<label htmlFor="amount1">$51</label>
+
 													<input
 														type="radio"
 														name="amount"
 														id="amount2"
 														value="101"
+														checked={selectedAmount === "101"}
+														onChange={(e) => handleAmountChange(e.target.value)}
 													/>
 													<label htmlFor="amount2">$101</label>
+
 													<input
 														type="radio"
 														name="amount"
 														id="amount3"
 														value="251"
+														checked={selectedAmount === "251"}
+														onChange={(e) => handleAmountChange(e.target.value)}
 													/>
 													<label htmlFor="amount3">$251</label>
+
 													<input
 														type="radio"
 														name="amount"
 														id="amount4"
 														value="501"
+														checked={selectedAmount === "501"}
+														onChange={(e) => handleAmountChange(e.target.value)}
 													/>
 													<label htmlFor="amount4">$501</label>
+
 													<input
 														type="radio"
 														name="amount"
 														id="amount5"
 														value="custom"
+														checked={selectedAmount === "custom"}
+														onChange={(e) => handleAmountChange(e.target.value)}
 													/>
 													<label htmlFor="amount5">Custom</label>
 												</div>
 											</div>
 										</div>
+
+										{selectedAmount === "custom" && (
+											<div className="col-lg-12">
+												<div className="form-group">
+													<label>Custom Amount ($) *</label>
+													<input
+														type="number"
+														placeholder="Enter custom amount"
+														min="1"
+														value={formData.custom_amount || ""}
+														onChange={(e) =>
+															setFormData({
+																...formData,
+																custom_amount:
+																	parseInt(e.target.value) || undefined,
+															})
+														}
+														required
+													/>
+												</div>
+											</div>
+										)}
+
 										<div className="col-lg-6">
 											<div className="form-group">
+												<label>Full Name *</label>
 												<input
 													type="text"
 													placeholder="Full Name"
-													name="name"
+													value={formData.name}
+													onChange={(e) =>
+														setFormData({ ...formData, name: e.target.value })
+													}
 													required
 												/>
 											</div>
 										</div>
 										<div className="col-lg-6">
 											<div className="form-group">
+												<label>Email Address *</label>
 												<input
 													type="email"
 													placeholder="Email Address"
-													name="email"
+													value={formData.email}
+													onChange={(e) =>
+														setFormData({ ...formData, email: e.target.value })
+													}
 													required
-												/>
-											</div>
-										</div>
-										<div className="col-lg-6">
-											<div className="form-group">
-												<input
-													type="text"
-													placeholder="Phone Number"
-													name="phone"
-												/>
-											</div>
-										</div>
-										<div className="col-lg-6">
-											<div className="form-group">
-												<input
-													type="text"
-													placeholder="Custom Amount"
-													name="custom_amount"
 												/>
 											</div>
 										</div>
 										<div className="col-lg-12">
 											<div className="form-group">
+												<label>Phone Number</label>
+												<input
+													type="text"
+													placeholder="Phone Number"
+													value={formData.phone}
+													onChange={(e) =>
+														setFormData({ ...formData, phone: e.target.value })
+													}
+												/>
+											</div>
+										</div>
+										<div className="col-lg-12">
+											<div className="form-group">
+												<label>Message (Optional)</label>
 												<textarea
-													name="message"
-													placeholder="Message (Optional)"
-													rows={4}></textarea>
+													placeholder="Any message or dedication..."
+													rows={4}
+													value={formData.message}
+													onChange={(e) =>
+														setFormData({
+															...formData,
+															message: e.target.value,
+														})
+													}></textarea>
 											</div>
 										</div>
 										<div className="col-lg-12 text-center">
-											<button type="submit" className="sigma_btn-custom">
-												Proceed to Payment{" "}
-												<i className="far fa-arrow-right"></i>
+											<button
+												type="submit"
+												className="sigma_btn-custom"
+												disabled={loading}>
+												{loading ? "Processing..." : "Proceed to Payment"}
+												{!loading && (
+													<i className="far fa-arrow-right ms-2"></i>
+												)}
 											</button>
 										</div>
 									</div>

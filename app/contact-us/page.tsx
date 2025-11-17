@@ -1,11 +1,67 @@
+"use client";
+
+import { useState } from "react";
 import TempleLayout from "@/components/TempleLayout";
+import { submitContactForm, type ContactForm } from "@/lib/api";
 
 export default function ContactUs() {
+	const [formData, setFormData] = useState<ContactForm>({
+		name: "",
+		email: "",
+		phone: "",
+		subject: "",
+		message: "",
+	});
+	const [loading, setLoading] = useState(false);
+	const [success, setSuccess] = useState(false);
+	const [error, setError] = useState("");
+
+	const handleSubmit = async (e: React.FormEvent) => {
+		e.preventDefault();
+		setLoading(true);
+		setError("");
+		setSuccess(false);
+
+		try {
+			await submitContactForm(formData);
+			setSuccess(true);
+			setFormData({
+				name: "",
+				email: "",
+				phone: "",
+				subject: "",
+				message: "",
+			});
+			window.scrollTo({ top: 0, behavior: "smooth" });
+		} catch (err: any) {
+			setError(err.message || "Failed to submit contact form");
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	return (
 		<TempleLayout title="Contact Us">
 			{/* Contact Info Section */}
 			<div className="section section-padding">
 				<div className="container">
+					{success && (
+						<div className="alert alert-success mb-4" role="alert">
+							<h4 className="alert-heading">Message Sent Successfully!</h4>
+							<p>
+								Thank you for contacting us. We will get back to you within 24
+								hours.
+							</p>
+						</div>
+					)}
+
+					{error && (
+						<div className="alert alert-danger mb-4" role="alert">
+							<h4 className="alert-heading">Error</h4>
+							<p>{error}</p>
+						</div>
+					)}
+
 					<div className="row">
 						<div className="col-lg-4">
 							<div className="sigma_icon-block icon-block-3 text-center">
@@ -73,7 +129,7 @@ export default function ContactUs() {
 										and we&apos;ll get back to you soon.
 									</p>
 								</div>
-								<form>
+								<form onSubmit={handleSubmit}>
 									<div className="row">
 										<div className="col-lg-6">
 											<div className="form-group">
@@ -81,7 +137,10 @@ export default function ContactUs() {
 												<input
 													type="text"
 													placeholder="Full Name"
-													name="name"
+													value={formData.name}
+													onChange={(e) =>
+														setFormData({ ...formData, name: e.target.value })
+													}
 													required
 												/>
 											</div>
@@ -92,7 +151,10 @@ export default function ContactUs() {
 												<input
 													type="email"
 													placeholder="Email Address"
-													name="email"
+													value={formData.email}
+													onChange={(e) =>
+														setFormData({ ...formData, email: e.target.value })
+													}
 													required
 												/>
 											</div>
@@ -103,7 +165,10 @@ export default function ContactUs() {
 												<input
 													type="text"
 													placeholder="Phone Number"
-													name="phone"
+													value={formData.phone}
+													onChange={(e) =>
+														setFormData({ ...formData, phone: e.target.value })
+													}
 												/>
 											</div>
 										</div>
@@ -113,7 +178,13 @@ export default function ContactUs() {
 												<input
 													type="text"
 													placeholder="Subject"
-													name="subject"
+													value={formData.subject}
+													onChange={(e) =>
+														setFormData({
+															...formData,
+															subject: e.target.value,
+														})
+													}
 													required
 												/>
 											</div>
@@ -121,9 +192,15 @@ export default function ContactUs() {
 										<div className="col-lg-12">
 											<div className="form-group">
 												<textarea
-													name="message"
 													placeholder="Enter Message"
 													rows={6}
+													value={formData.message}
+													onChange={(e) =>
+														setFormData({
+															...formData,
+															message: e.target.value,
+														})
+													}
 													required></textarea>
 											</div>
 										</div>
@@ -131,8 +208,11 @@ export default function ContactUs() {
 											<button
 												type="submit"
 												className="sigma_btn-custom"
-												name="button">
-												Submit Message <i className="far fa-arrow-right"></i>
+												disabled={loading}>
+												{loading ? "Sending..." : "Submit Message"}
+												{!loading && (
+													<i className="far fa-arrow-right ms-2"></i>
+												)}
 											</button>
 										</div>
 									</div>

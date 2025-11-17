@@ -325,9 +325,19 @@ export default function Home() {
 										</div>
 									</div>
 								</div>
-								<a className="sigma_btn-custom light" href="/about-us">
-									Learn More <i className="far fa-arrow-right"></i>
-								</a>
+								<div className="section-button d-flex flex-wrap gap-2">
+									<a className="sigma_btn-custom light" href="/about-us">
+										Learn More <i className="far fa-arrow-right"></i>
+									</a>
+									<a
+										className="sigma_btn-custom secondary"
+										href="/volunteer-apply">
+										Become a Volunteer <i className="far fa-arrow-right"></i>
+									</a>
+									<a className="sigma_btn-custom" href="/community-join">
+										Join Community <i className="far fa-arrow-right"></i>
+									</a>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -1097,6 +1107,108 @@ export default function Home() {
 									</div>
 								</div>
 							</article>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			{/* Get Involved Section */}
+			<div className="section section-padding light-bg">
+				<div className="container">
+					<div className="section-title text-center">
+						<p className="subtitle">Get Involved</p>
+						<h4 className="title">Join Our Temple Community</h4>
+					</div>
+					<div className="row">
+						<div className="col-lg-4 col-md-6">
+							<div className="sigma_service border text-center style-1 bg-white">
+								<div className="sigma_service-thumb">
+									<i className="flaticon-temple"></i>
+									<span></span>
+									<span></span>
+								</div>
+								<div className="sigma_service-body">
+									<h5>Become a Volunteer</h5>
+									<p>Join our team and serve the community with dedication</p>
+									<a href="/volunteer-apply" className="sigma_btn-custom mt-3">
+										Apply Now <i className="far fa-arrow-right"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div className="col-lg-4 col-md-6">
+							<div className="sigma_service border text-center style-1 primary-bg">
+								<div className="sigma_service-thumb">
+									<i className="text-white flaticon-arti"></i>
+									<span></span>
+									<span></span>
+								</div>
+								<div className="sigma_service-body">
+									<h5 className="text-white">Create Community</h5>
+									<p className="text-white">
+										Start your own temple community group
+									</p>
+									<a
+										href="/community-create"
+										className="sigma_btn-custom light mt-3">
+										Create Now <i className="far fa-arrow-right"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div className="col-lg-4 col-md-6">
+							<div className="sigma_service border text-center style-1 secondary-bg">
+								<div className="sigma_service-thumb">
+									<i className="custom-primary flaticon-pooja"></i>
+									<span></span>
+									<span></span>
+								</div>
+								<div className="sigma_service-body">
+									<h5 className="text-white">Join Community</h5>
+									<p className="text-white">
+										Become a member of our temple community
+									</p>
+									<a
+										href="/community-join"
+										className="sigma_btn-custom light mt-3">
+										Join Now <i className="far fa-arrow-right"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div className="row mt-4">
+						<div className="col-lg-6 col-md-6">
+							<div className="sigma_service border text-center style-1 bg-white">
+								<div className="sigma_service-thumb">
+									<i className="flaticon-pooja"></i>
+									<span></span>
+									<span></span>
+								</div>
+								<div className="sigma_service-body">
+									<h5>Make a Donation</h5>
+									<p>Support our temple and charitable activities</p>
+									<a href="/donation" className="sigma_btn-custom mt-3">
+										Donate <i className="far fa-arrow-right"></i>
+									</a>
+								</div>
+							</div>
+						</div>
+						<div className="col-lg-6 col-md-6">
+							<div className="sigma_service border text-center style-1 bg-white">
+								<div className="sigma_service-thumb">
+									<i className="flaticon-temple"></i>
+									<span></span>
+									<span></span>
+								</div>
+								<div className="sigma_service-body">
+									<h5>Contact Us</h5>
+									<p>Get in touch with our temple team</p>
+									<a href="/contact-us" className="sigma_btn-custom mt-3">
+										Contact <i className="far fa-arrow-right"></i>
+									</a>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>
