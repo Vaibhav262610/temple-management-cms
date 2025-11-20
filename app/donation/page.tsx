@@ -1,35 +1,46 @@
 "use client";
-
 import { useState } from "react";
 import TempleLayout from "@/components/TempleLayout";
-import { submitDonation, type DonationForm } from "@/lib/api";
+import { submitDonation } from "@/lib/api";
 
 export default function Donation() {
-	const [formData, setFormData] = useState<DonationForm>({
+	const [donationAmount, setDonationAmount] = useState("100");
+	const [paymentMethod, setPaymentMethod] = useState("online");
+	const [selectedCampaign, setSelectedCampaign] = useState("1");
+	const [formData, setFormData] = useState({
 		name: "",
 		email: "",
 		phone: "",
-		amount: 51,
-		custom_amount: undefined,
 		message: "",
 	});
-	const [selectedAmount, setSelectedAmount] = useState<string>("51");
 	const [loading, setLoading] = useState(false);
 	const [success, setSuccess] = useState(false);
 	const [error, setError] = useState("");
 
-	const handleAmountChange = (amount: string) => {
-		setSelectedAmount(amount);
-		if (amount === "custom") {
-			setFormData({ ...formData, amount: 0 });
-		} else {
-			setFormData({
-				...formData,
-				amount: parseInt(amount),
-				custom_amount: undefined,
-			});
-		}
-	};
+	const campaigns = [
+		{
+			id: "1",
+			title: "Temple Maintenance & Development",
+			target: 50000,
+		},
+		{
+			id: "2",
+			title: "Community Food Program",
+			target: 25000,
+		},
+		{
+			id: "3",
+			title: "Religious Education",
+			target: 15000,
+		},
+		{
+			id: "4",
+			title: "Festival Celebrations",
+			target: 20000,
+		},
+	];
+
+	const predefinedAmounts = [15, 25, 45, 100, 500];
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -37,34 +48,41 @@ export default function Donation() {
 		setError("");
 		setSuccess(false);
 
-		// Validate amount
-		const finalAmount =
-			selectedAmount === "custom" ? formData.custom_amount : formData.amount;
-		if (!finalAmount || finalAmount <= 0) {
-			setError("Please enter a valid donation amount");
-			setLoading(false);
-			return;
-		}
-
 		try {
+			const amount = parseFloat(donationAmount);
+
+			if (!amount || amount <= 0) {
+				setError("Please enter a valid donation amount");
+				setLoading(false);
+				return;
+			}
+
+			if (!formData.name || !formData.email) {
+				setError("Please fill in all required fields");
+				setLoading(false);
+				return;
+			}
+
+			// Only send fields that exist in the database
 			const donationData = {
-				...formData,
-				amount: finalAmount,
+				donor_name: formData.name,
+				donor_email: formData.email,
+				donor_phone: formData.phone || null,
+				amount: amount,
 			};
-			await submitDonation(donationData);
+
+			console.log("Submitting donation:", donationData);
+			const result = await submitDonation(donationData);
+			console.log("Donation result:", result);
+
 			setSuccess(true);
-			setFormData({
-				name: "",
-				email: "",
-				phone: "",
-				amount: 51,
-				custom_amount: undefined,
-				message: "",
-			});
-			setSelectedAmount("51");
+			setFormData({ name: "", email: "", phone: "", message: "" });
+			setDonationAmount("100");
+
+			// Scroll to top to show success message
 			window.scrollTo({ top: 0, behavior: "smooth" });
 		} catch (err: any) {
-			setError(err.message || "Failed to process donation");
+			setError(err.message || "Failed to process donation. Please try again.");
 		} finally {
 			setLoading(false);
 		}
@@ -75,24 +93,6 @@ export default function Donation() {
 			{/* Donation Intro */}
 			<div className="section section-padding">
 				<div className="container">
-					{success && (
-						<div className="alert alert-success mb-4" role="alert">
-							<h4 className="alert-heading">Thank You for Your Donation!</h4>
-							<p>
-								Your generous contribution will help us continue our mission of
-								service and spirituality. You will receive a confirmation email
-								shortly.
-							</p>
-						</div>
-					)}
-
-					{error && (
-						<div className="alert alert-danger mb-4" role="alert">
-							<h4 className="alert-heading">Error</h4>
-							<p>{error}</p>
-						</div>
-					)}
-
 					<div className="row align-items-center">
 						<div className="col-lg-6">
 							<div className="section-title">
@@ -139,134 +139,186 @@ export default function Donation() {
 									<h4 className="title">Make Your Donation</h4>
 									<p>Fill out the form below to complete your donation</p>
 								</div>
+
+								{/* Success Message */}
+								{success && (
+									<div className="alert alert-success mb-4" role="alert">
+										<h5 className="alert-heading">
+											Thank You for Your Donation!
+										</h5>
+										<p>
+											Your generous contribution has been received. You will
+											receive a confirmation email shortly.
+										</p>
+									</div>
+								)}
+
+								{/* Error Message */}
+								{error && (
+									<div className="alert alert-danger mb-4" role="alert">
+										<strong>Error:</strong> {error}
+									</div>
+								)}
+
 								<form onSubmit={handleSubmit}>
 									<div className="row">
-										<div className="col-lg-12">
-											<div className="form-group">
-												<label>Donation Amount *</label>
-												<div className="sigma_donation-amount-wrapper">
+										{/* Donation Amount */}
+										<div className="col-12">
+											<div className="form-group mb-5">
+												<h5>Donation Amount</h5>
+												<div className="input-group">
+													<div className="input-group-prepend">
+														<button
+															className="sigma_btn-custom shadow-none btn-sm"
+															type="button">
+															$
+														</button>
+													</div>
 													<input
-														type="radio"
-														name="amount"
-														id="amount1"
-														value="51"
-														checked={selectedAmount === "51"}
-														onChange={(e) => handleAmountChange(e.target.value)}
+														className="form-control ms-0"
+														placeholder="$100"
+														type="text"
+														value={donationAmount}
+														onChange={(e) => setDonationAmount(e.target.value)}
 													/>
-													<label htmlFor="amount1">$51</label>
+												</div>
+												<ul className="sigma_select-amount">
+													{predefinedAmounts.map((amount) => (
+														<li
+															key={amount}
+															className={
+																donationAmount === amount.toString()
+																	? "active"
+																	: ""
+															}
+															onClick={() =>
+																setDonationAmount(amount.toString())
+															}>
+															${amount}.00
+														</li>
+													))}
+												</ul>
+											</div>
+										</div>
 
-													<input
-														type="radio"
-														name="amount"
-														id="amount2"
-														value="101"
-														checked={selectedAmount === "101"}
-														onChange={(e) => handleAmountChange(e.target.value)}
-													/>
-													<label htmlFor="amount2">$101</label>
-
-													<input
-														type="radio"
-														name="amount"
-														id="amount3"
-														value="251"
-														checked={selectedAmount === "251"}
-														onChange={(e) => handleAmountChange(e.target.value)}
-													/>
-													<label htmlFor="amount3">$251</label>
-
-													<input
-														type="radio"
-														name="amount"
-														id="amount4"
-														value="501"
-														checked={selectedAmount === "501"}
-														onChange={(e) => handleAmountChange(e.target.value)}
-													/>
-													<label htmlFor="amount4">$501</label>
-
-													<input
-														type="radio"
-														name="amount"
-														id="amount5"
-														value="custom"
-														checked={selectedAmount === "custom"}
-														onChange={(e) => handleAmountChange(e.target.value)}
-													/>
-													<label htmlFor="amount5">Custom</label>
+										{/* Payment Method */}
+										<div className="col-12">
+											<div className="form-group mb-5">
+												<h5>Payment Method</h5>
+												<div className="d-flex align-items-center">
+													<div className="d-flex align-items-center">
+														<input
+															id="radio"
+															name="radio"
+															type="radio"
+															value="online"
+															checked={paymentMethod === "online"}
+															onChange={(e) => setPaymentMethod(e.target.value)}
+														/>
+														<label className="mb-0" htmlFor="radio">
+															Online Payment
+														</label>
+													</div>
+													<div className="d-flex align-items-center ms-4">
+														<input
+															id="radio2"
+															name="radio"
+															type="radio"
+															value="offline"
+															checked={paymentMethod === "offline"}
+															onChange={(e) => setPaymentMethod(e.target.value)}
+														/>
+														<label className="mb-0" htmlFor="radio2">
+															Offline Payment
+														</label>
+													</div>
 												</div>
 											</div>
 										</div>
 
-										{selectedAmount === "custom" && (
-											<div className="col-lg-12">
-												<div className="form-group">
-													<label>Custom Amount ($) *</label>
-													<input
-														type="number"
-														placeholder="Enter custom amount"
-														min="1"
-														value={formData.custom_amount || ""}
-														onChange={(e) =>
-															setFormData({
-																...formData,
-																custom_amount:
-																	parseInt(e.target.value) || undefined,
-															})
-														}
-														required
-													/>
+										{/* Campaign Selection */}
+										<div className="col-12">
+											<div className="form-group">
+												<h5>Campaigns</h5>
+												<select
+													className="form-control"
+													value={selectedCampaign}
+													onChange={(e) => setSelectedCampaign(e.target.value)}>
+													{campaigns.map((campaign) => (
+														<option key={campaign.id} value={campaign.id}>
+															{campaign.title} - (Target: $
+															{campaign.target.toLocaleString()})
+														</option>
+													))}
+												</select>
+											</div>
+										</div>
+
+										{/* Donator Details */}
+										<div className="col-12">
+											<div className="form-group">
+												<h5>Donator Details</h5>
+												<div className="row">
+													<div className="col-lg-6">
+														<input
+															className="form-control"
+															name="name"
+															placeholder="Full Name"
+															type="text"
+															value={formData.name}
+															onChange={(e) =>
+																setFormData({
+																	...formData,
+																	name: e.target.value,
+																})
+															}
+															required
+														/>
+													</div>
+													<div className="col-lg-6 mt-3 mt-lg-0">
+														<input
+															className="form-control"
+															name="email"
+															placeholder="Email Address"
+															type="email"
+															value={formData.email}
+															onChange={(e) =>
+																setFormData({
+																	...formData,
+																	email: e.target.value,
+																})
+															}
+															required
+														/>
+													</div>
+													<div className="col-lg-12 mt-3">
+														<input
+															className="form-control"
+															name="phone"
+															placeholder="Phone Number (Optional)"
+															type="tel"
+															value={formData.phone}
+															onChange={(e) =>
+																setFormData({
+																	...formData,
+																	phone: e.target.value,
+																})
+															}
+														/>
+													</div>
 												</div>
 											</div>
-										)}
+										</div>
 
-										<div className="col-lg-6">
+										{/* Message */}
+										<div className="col-12">
 											<div className="form-group">
-												<label>Full Name *</label>
-												<input
-													type="text"
-													placeholder="Full Name"
-													value={formData.name}
-													onChange={(e) =>
-														setFormData({ ...formData, name: e.target.value })
-													}
-													required
-												/>
-											</div>
-										</div>
-										<div className="col-lg-6">
-											<div className="form-group">
-												<label>Email Address *</label>
-												<input
-													type="email"
-													placeholder="Email Address"
-													value={formData.email}
-													onChange={(e) =>
-														setFormData({ ...formData, email: e.target.value })
-													}
-													required
-												/>
-											</div>
-										</div>
-										<div className="col-lg-12">
-											<div className="form-group">
-												<label>Phone Number</label>
-												<input
-													type="text"
-													placeholder="Phone Number"
-													value={formData.phone}
-													onChange={(e) =>
-														setFormData({ ...formData, phone: e.target.value })
-													}
-												/>
-											</div>
-										</div>
-										<div className="col-lg-12">
-											<div className="form-group">
-												<label>Message (Optional)</label>
+												<h5>Message (Optional)</h5>
 												<textarea
-													placeholder="Any message or dedication..."
-													rows={4}
+													className="form-control"
+													name="message"
+													placeholder="Enter Message"
+													rows={6}
 													value={formData.message}
 													onChange={(e) =>
 														setFormData({
@@ -276,15 +328,14 @@ export default function Donation() {
 													}></textarea>
 											</div>
 										</div>
+
+										{/* Submit Button */}
 										<div className="col-lg-12 text-center">
 											<button
-												type="submit"
 												className="sigma_btn-custom"
+												type="submit"
 												disabled={loading}>
-												{loading ? "Processing..." : "Proceed to Payment"}
-												{!loading && (
-													<i className="far fa-arrow-right ms-2"></i>
-												)}
+												{loading ? "Processing..." : "Donate Now"}
 											</button>
 										</div>
 									</div>
@@ -296,58 +347,55 @@ export default function Donation() {
 			</div>
 
 			{/* Other Ways to Donate */}
-			<div className="section pt-0">
+			<div className="section section-padding light-bg">
 				<div className="container">
-					<div className="section-title text-center">
-						<h4 className="title">Other Ways to Donate</h4>
+					<div className="row align-items-center">
+						<div className="col-md-5">
+							<div className="section-title text-end">
+								<p className="subtitle">WAYS WE CAN HELP</p>
+								<h4 className="title">Angels Ready To Help</h4>
+							</div>
+						</div>
+						<div className="col-md-2 d-none d-md-block">
+							<span className="vertical-seperator"></span>
+						</div>
+						<div className="col-md-5 d-none d-md-block">
+							<p className="fw-600 mb-0 custom-secondary">
+								Our mission is to share the Good of Hinduism, Loving, Faith and
+								Serving. People ask questions related to Hinduism.
+							</p>
+						</div>
 					</div>
 					<div className="row">
-						<div className="col-lg-4">
-							<div className="sigma_icon-block text-center">
-								<i className="flaticon-temple"></i>
-								<div className="sigma_icon-block-content">
-									<h5>By Check</h5>
+						<div className="col-lg-6 col-md-6">
+							<a className="sigma_service style-3" href="/services">
+								<div className="sigma_service-thumb">
+									<img alt="img" src="/temple/assets/img/service/1.jpg" />
+									<i className="flaticon-temple"></i>
+								</div>
+								<div className="sigma_service-body">
+									<h5>About Temple</h5>
 									<p>
-										Mail your check to:
-										<br />
-										Shri Shirdi Sai Baba Mandir
-										<br />
-										1101 Foran Lane
-										<br />
-										Aurora, IL 60506
+										Temple is a place where Hindu worship our Bhagwan Ram,
+										Shiva, Vishnu, Krishna etc. Proin eget tortor risus.
 									</p>
 								</div>
-							</div>
+							</a>
 						</div>
-						<div className="col-lg-4">
-							<div className="sigma_icon-block text-center">
-								<i className="flaticon-arti"></i>
-								<div className="sigma_icon-block-content">
-									<h5>Bank Transfer</h5>
+						<div className="col-lg-6 col-md-6">
+							<a className="sigma_service style-3" href="/services">
+								<div className="sigma_service-thumb">
+									<img alt="img" src="/temple/assets/img/service/2.jpg" />
+									<i className="flaticon-pooja"></i>
+								</div>
+								<div className="sigma_service-body">
+									<h5>Why Hindu Temple</h5>
 									<p>
-										Contact us for bank details
-										<br />
-										Call: +1 (630) 897-1500
-										<br />
-										Email: pr@saisamsthanusa.org
+										Temple is a place where Hindu worship our Bhagwan Ram,
+										Shiva, Vishnu, Krishna etc. Proin eget tortor risus.
 									</p>
 								</div>
-							</div>
-						</div>
-						<div className="col-lg-4">
-							<div className="sigma_icon-block text-center">
-								<i className="flaticon-pooja"></i>
-								<div className="sigma_icon-block-content">
-									<h5>In Person</h5>
-									<p>
-										Visit the temple during
-										<br />
-										operating hours
-										<br />
-										7:00 AM - 9:00 PM Daily
-									</p>
-								</div>
-							</div>
+							</a>
 						</div>
 					</div>
 				</div>

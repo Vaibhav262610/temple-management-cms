@@ -1,6 +1,47 @@
+"use client";
+import { useEffect, useState } from "react";
 import TempleScripts from "@/components/TempleScripts";
+import { getHomeBanner } from "@/lib/api";
+
+interface BannerData {
+	id?: string;
+	title: string;
+	subtitle?: string;
+	description?: string;
+	image_url?: string;
+	imageUrl?: string; // Alternative naming
+	button_text?: string;
+	buttonText?: string; // Alternative naming
+	button_link?: string;
+	buttonLink?: string; // Alternative naming
+	status?: string;
+	created_at?: string;
+	updated_at?: string;
+}
 
 export default function Home() {
+	const [banner, setBanner] = useState<BannerData | null>(null);
+
+	useEffect(() => {
+		async function fetchBanner() {
+			try {
+				const data = await getHomeBanner();
+
+				if (data) {
+					// Find the banner with title "home banner"
+					const homeBanner = Array.isArray(data)
+						? data.find((b: any) => b.title?.toLowerCase() === "home banner")
+						: data;
+
+					setBanner(homeBanner || null);
+				}
+			} catch (error) {
+				console.error("Failed to fetch banner:", error);
+			}
+		}
+		fetchBanner();
+	}, []);
+
 	return (
 		<>
 			<TempleScripts />
@@ -158,7 +199,13 @@ export default function Home() {
 			{/* Banner */}
 			<div
 				className="sigma_banner banner-1 bg-cover light-overlay bg-center bg-norepeat"
-				style={{ backgroundImage: "url(/temple/assets/img/banner/9.jpg)" }}>
+				style={{
+					backgroundImage: `url(${
+						banner?.image_url ||
+						banner?.imageUrl ||
+						"/new_images/2018/02/Abstract-Artistic.jpg"
+					})`,
+				}}>
 				<div className="sigma_banner-slider">
 					<div className="sigma_banner-slider-inner">
 						<div className="sigma_banner-text">
@@ -193,7 +240,7 @@ export default function Home() {
 								<img
 									alt="png"
 									className="d-none d-lg-block w-50 mt-0"
-									src="/temple/assets/img/banner/png/4-a.jpg"
+									src="/new_images/2018/02/Saibaba-Photo-1-768x516.jpg"
 								/>
 							</div>
 						</div>
@@ -271,7 +318,8 @@ export default function Home() {
 							<div
 								className="sigma_counter bg-cover primary-overlay bg-norepeat bg-center"
 								style={{
-									backgroundImage: "url(/temple/assets/img/counter.jpg)",
+									backgroundImage:
+										"url(/new_images/2018/02/Abstract-Artistic.jpg)",
 								}}>
 								<h4>
 									<b className="counter" data-from="0" data-to="25">
@@ -398,7 +446,7 @@ export default function Home() {
 						<div className="col-lg-4 col-md-6">
 							<div className="sigma_service style-2">
 								<div className="sigma_service-thumb">
-									<img alt="img" src="/temple/assets/img/donation/5.jpg" />
+									<img alt="img" src="/new_images/2018/03/annadaana.jpg" />
 								</div>
 								<div className="sigma_service-body">
 									<h5>
@@ -433,7 +481,7 @@ export default function Home() {
 						<div className="col-lg-4 col-md-6">
 							<div className="sigma_service style-2">
 								<div className="sigma_service-thumb">
-									<img alt="img" src="/temple/assets/img/donation/6.jpg" />
+									<img alt="img" src="/new_images/2018/03/cultural1.jpg" />
 								</div>
 								<div className="sigma_service-body">
 									<h5>
@@ -468,7 +516,7 @@ export default function Home() {
 						<div className="col-lg-4 col-md-6">
 							<div className="sigma_service style-2">
 								<div className="sigma_service-thumb">
-									<img alt="img" src="/temple/assets/img/donation/7.jpg" />
+									<img alt="img" src="/new_images/2018/03/Cultural2.jpg" />
 								</div>
 								<div className="sigma_service-body">
 									<h5>
@@ -518,7 +566,7 @@ export default function Home() {
 									<div className="sigma_video-popup-wrap">
 										<img
 											alt="video"
-											src="/temple/assets/img/video-gallery/01.png"
+											src="/new_images/2018/02/Parayana-Baba.jpg"
 										/>
 										<a
 											className="sigma_video-popup popup-youtube"
@@ -551,7 +599,7 @@ export default function Home() {
 						</div>
 						<div className="col-lg-3 col-sm-6 mb-30">
 							<div className="sigma_video-popup-wrap">
-								<img alt="video" src="/temple/assets/img/video-gallery/1.png" />
+								<img alt="video" src="/new_images/2018/03/Kalamanjari.jpg" />
 								<a
 									className="sigma_video-popup popup-sm popup-youtube"
 									href="https://www.youtube.com/watch?v=TKnufs85hXk">
@@ -562,7 +610,10 @@ export default function Home() {
 						</div>
 						<div className="col-lg-3 col-sm-6 mb-30">
 							<div className="sigma_video-popup-wrap">
-								<img alt="video" src="/temple/assets/img/video-gallery/2.jpg" />
+								<img
+									alt="video"
+									src="/new_images/2018/03/SoundaryaLahari.jpg"
+								/>
 								<a
 									className="sigma_video-popup popup-sm popup-youtube"
 									href="https://www.youtube.com/watch?v=TKnufs85hXk">
@@ -573,7 +624,10 @@ export default function Home() {
 						</div>
 						<div className="col-lg-3 col-sm-6 mb-30">
 							<div className="sigma_video-popup-wrap">
-								<img alt="video" src="/temple/assets/img/video-gallery/3.jpg" />
+								<img
+									alt="video"
+									src="/new_images/2018/03/VasantaNavaratriSriRamaNavamiFlyer.jpg"
+								/>
 								<a
 									className="sigma_video-popup popup-sm popup-youtube"
 									href="https://www.youtube.com/watch?v=TKnufs85hXk">
@@ -584,7 +638,10 @@ export default function Home() {
 						</div>
 						<div className="col-lg-3 col-sm-6 mb-30">
 							<div className="sigma_video-popup-wrap">
-								<img alt="video" src="/temple/assets/img/video-gallery/4.jpg" />
+								<img
+									alt="video"
+									src="/new_images/2018/04/Annakut-Flyer-v4-pdf.jpg"
+								/>
 								<a
 									className="sigma_video-popup popup-sm popup-youtube"
 									href="https://www.youtube.com/watch?v=TKnufs85hXk">
@@ -623,7 +680,10 @@ export default function Home() {
 					<div className="portfolio-filter row">
 						<div className="col-lg-4 coaching">
 							<div className="sigma_portfolio-item">
-								<img alt="portfolio" src="/temple/assets/img/puja/1.jpg" />
+								<img
+									alt="portfolio"
+									src="/new_images/2018/03/Kalamanjari.jpg"
+								/>
 								<div className="sigma_portfolio-item-content">
 									<div className="sigma_portfolio-item-content-inner">
 										<h5>
@@ -642,7 +702,10 @@ export default function Home() {
 						</div>
 						<div className="col-lg-4 strategy">
 							<div className="sigma_portfolio-item">
-								<img alt="portfolio" src="/temple/assets/img/puja/2.jpg" />
+								<img
+									alt="portfolio"
+									src="/new_images/2018/03/SoundaryaLahari.jpg"
+								/>
 								<div className="sigma_portfolio-item-content">
 									<div className="sigma_portfolio-item-content-inner">
 										<h5>
@@ -661,7 +724,10 @@ export default function Home() {
 						</div>
 						<div className="col-lg-4 coaching strategy">
 							<div className="sigma_portfolio-item">
-								<img alt="portfolio" src="/temple/assets/img/puja/3.jpg" />
+								<img
+									alt="portfolio"
+									src="/new_images/2018/03/VasantaNavaratriSriRamaNavamiFlyer.jpg"
+								/>
 								<div className="sigma_portfolio-item-content">
 									<div className="sigma_portfolio-item-content-inner">
 										<h5>
@@ -680,7 +746,10 @@ export default function Home() {
 						</div>
 						<div className="col-lg-4 relations coaching">
 							<div className="sigma_portfolio-item">
-								<img alt="portfolio" src="/temple/assets/img/puja/4.jpg" />
+								<img
+									alt="portfolio"
+									src="/new_images/2018/04/Annakut-Flyer-v4-pdf.jpg"
+								/>
 								<div className="sigma_portfolio-item-content">
 									<div className="sigma_portfolio-item-content-inner">
 										<h5>
@@ -699,7 +768,10 @@ export default function Home() {
 						</div>
 						<div className="col-lg-4 stakeholder strategy">
 							<div className="sigma_portfolio-item">
-								<img alt="portfolio" src="/temple/assets/img/puja/5.jpg" />
+								<img
+									alt="portfolio"
+									src="/new_images/2018/02/Parayana-Baba.jpg"
+								/>
 								<div className="sigma_portfolio-item-content">
 									<div className="sigma_portfolio-item-content-inner">
 										<h5>
@@ -718,7 +790,7 @@ export default function Home() {
 						</div>
 						<div className="col-lg-4 stakeholder">
 							<div className="sigma_portfolio-item">
-								<img alt="portfolio" src="/temple/assets/img/puja/6.jpg" />
+								<img alt="portfolio" src="/new_images/2018/03/annadaana.jpg" />
 								<div className="sigma_portfolio-item-content">
 									<div className="sigma_portfolio-item-content-inner">
 										<h5>
@@ -742,7 +814,9 @@ export default function Home() {
 			{/* Volunteers */}
 			<div
 				className="section section-padding bg-cover secondary-overlay bg-center bg-norepeat"
-				style={{ backgroundImage: "url(/temple/assets/img/bg2.jpg)" }}>
+				style={{
+					backgroundImage: "url(/new_images/2018/02/Abstract-Artistic.jpg)",
+				}}>
 				<div className="container">
 					<div className="section-title text-center">
 						<p className="subtitle text-white">Who</p>
@@ -754,7 +828,7 @@ export default function Home() {
 								<div className="sigma_volunteers-thumb">
 									<img
 										alt="volunteers"
-										src="/temple/assets/img/volunteers/4.jpg"
+										src="/new_images/2018/02/Saibaba-Photo-1-768x516.jpg"
 									/>
 									<ul className="sigma_sm">
 										<li>
@@ -794,7 +868,7 @@ export default function Home() {
 								<div className="sigma_volunteers-thumb">
 									<img
 										alt="volunteers"
-										src="/temple/assets/img/volunteers/6.jpg"
+										src="/new_images/2018/03/bhajans_dwarkamai.jpg"
 									/>
 									<ul className="sigma_sm">
 										<li>
@@ -834,7 +908,7 @@ export default function Home() {
 								<div className="sigma_volunteers-thumb">
 									<img
 										alt="volunteers"
-										src="/temple/assets/img/volunteers/5.jpg"
+										src="/new_images/2018/03/annadaana.jpg"
 									/>
 									<ul className="sigma_sm">
 										<li>
@@ -874,7 +948,7 @@ export default function Home() {
 								<div className="sigma_volunteers-thumb">
 									<img
 										alt="volunteers"
-										src="/temple/assets/img/volunteers/3.jpg"
+										src="/new_images/2018/03/cultural1.jpg"
 									/>
 									<ul className="sigma_sm">
 										<li>
@@ -936,13 +1010,13 @@ export default function Home() {
 											<div className="col-md-3">
 												<img
 													alt="img"
-													src="/temple/assets/img/testimonials/c-img01.png"
+													src="/new_images/2018/02/Saibaba-Photo-1-768x516.jpg"
 												/>
 											</div>
 											<div className="col-md-3 ms-3">
 												<img
 													alt="img"
-													src="/temple/assets/img/testimonials/c-img03.png"
+													src="/new_images/2018/03/bhajans_dwarkamai.jpg"
 												/>
 											</div>
 										</div>
@@ -990,7 +1064,9 @@ export default function Home() {
 			{/* Blog */}
 			<div
 				className="section section-padding primary-overlay bg-cover bg-center"
-				style={{ backgroundImage: "url(/temple/assets/img/bg3.jpg)" }}>
+				style={{
+					backgroundImage: "url(/new_images/2018/02/Abstract-Artistic.jpg)",
+				}}>
 				<div className="container">
 					<div className="section-title text-center">
 						<p className="subtitle text-white">Blog</p>
@@ -1001,7 +1077,7 @@ export default function Home() {
 							<article className="sigma_post">
 								<div className="sigma_post-thumb">
 									<a href="/blog-details">
-										<img alt="post" src="/temple/assets/img/blog/2.jpg" />
+										<img alt="post" src="/new_images/2018/03/Kalamanjari.jpg" />
 									</a>
 								</div>
 								<div className="sigma_post-body">
@@ -1026,7 +1102,10 @@ export default function Home() {
 										</a>
 									</h5>
 									<div className="sigma_post-single-author">
-										<img alt="author" src="/temple/assets/img/people/1.jpg" />
+										<img
+											alt="author"
+											src="/new_images/2018/02/Saibaba-Photo-1-768x516.jpg"
+										/>
 										<div className="sigma_post-single-author-content">
 											By <p>Yesh Chopra</p>
 										</div>
@@ -1038,7 +1117,10 @@ export default function Home() {
 							<article className="sigma_post">
 								<div className="sigma_post-thumb">
 									<a href="/blog-details">
-										<img alt="post" src="/temple/assets/img/blog/1.jpg" />
+										<img
+											alt="post"
+											src="/new_images/2018/03/SoundaryaLahari.jpg"
+										/>
 									</a>
 								</div>
 								<div className="sigma_post-body">
@@ -1063,7 +1145,10 @@ export default function Home() {
 										</a>
 									</h5>
 									<div className="sigma_post-single-author">
-										<img alt="author" src="/temple/assets/img/people/2.jpg" />
+										<img
+											alt="author"
+											src="/new_images/2018/03/bhajans_dwarkamai.jpg"
+										/>
 										<div className="sigma_post-single-author-content">
 											By <p>Yesh Chopra</p>
 										</div>
@@ -1075,7 +1160,7 @@ export default function Home() {
 							<article className="sigma_post">
 								<div className="sigma_post-thumb">
 									<a href="/blog-details">
-										<img alt="post" src="/temple/assets/img/blog/3.jpg" />
+										<img alt="post" src="/new_images/2018/03/annadaana.jpg" />
 									</a>
 								</div>
 								<div className="sigma_post-body">
@@ -1100,7 +1185,7 @@ export default function Home() {
 										</a>
 									</h5>
 									<div className="sigma_post-single-author">
-										<img alt="author" src="/temple/assets/img/people/1.jpg" />
+										<img alt="author" src="/new_images/2018/03/cultural1.jpg" />
 										<div className="sigma_post-single-author-content">
 											By <p>Yesh Chopra</p>
 										</div>
@@ -1303,3 +1388,6 @@ export default function Home() {
 		</>
 	);
 }
+
+
+
