@@ -6,7 +6,6 @@ import { submitDonation } from "@/lib/api";
 export default function Donation() {
 	const [donationAmount, setDonationAmount] = useState("100");
 	const [paymentMethod, setPaymentMethod] = useState("online");
-	const [selectedCampaign, setSelectedCampaign] = useState("1");
 	const [formData, setFormData] = useState({
 		name: "",
 		email: "",
@@ -17,30 +16,30 @@ export default function Donation() {
 	const [success, setSuccess] = useState(false);
 	const [error, setError] = useState("");
 
-	const campaigns = [
+	const donationCategories = [
 		{
-			id: "1",
-			title: "Temple Maintenance & Development",
-			target: 50000,
+			id: "sai_aangan",
+			title: "Sai Aangan",
+			amounts: [11, 21, 51, 101, 151, 251, 501, 1001, 2501, 5001],
 		},
 		{
-			id: "2",
-			title: "Community Food Program",
-			target: 25000,
+			id: "general_donation",
+			title: "General Donation to Sai Mandir",
+			amounts: [1, 11, 21, 51, 101, 151, 251, 501, 1001, 2501, 5001],
 		},
 		{
-			id: "3",
-			title: "Religious Education",
-			target: 15000,
-		},
-		{
-			id: "4",
-			title: "Festival Celebrations",
-			target: 20000,
+			id: "service_to_needy",
+			title: "Service to Needy Program",
+			amounts: [11, 21, 51, 101, 151, 251, 501, 1001],
 		},
 	];
 
-	const predefinedAmounts = [15, 25, 45, 100, 500];
+	const [selectedCategory, setSelectedCategory] = useState("sai_aangan");
+
+	// Get predefined amounts based on selected category
+	const predefinedAmounts = donationCategories.find(
+		(cat) => cat.id === selectedCategory
+	)?.amounts || [11, 21, 51, 101, 151, 251, 501, 1001];
 
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
@@ -239,15 +238,17 @@ export default function Donation() {
 										{/* Campaign Selection */}
 										<div className="col-12">
 											<div className="form-group">
-												<h5>Campaigns</h5>
+												<h5>Donation Category</h5>
 												<select
 													className="form-control"
-													value={selectedCampaign}
-													onChange={(e) => setSelectedCampaign(e.target.value)}>
-													{campaigns.map((campaign) => (
-														<option key={campaign.id} value={campaign.id}>
-															{campaign.title} - (Target: $
-															{campaign.target.toLocaleString()})
+													value={selectedCategory}
+													onChange={(e) => {
+														setSelectedCategory(e.target.value);
+														setDonationAmount(""); // Reset amount when category changes
+													}}>
+													{donationCategories.map((category) => (
+														<option key={category.id} value={category.id}>
+															{category.title}
 														</option>
 													))}
 												</select>

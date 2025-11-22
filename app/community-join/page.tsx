@@ -12,6 +12,7 @@ export default function CommunityJoin() {
 	const [communities, setCommunities] = useState<any[]>([]);
 	const [selectedCommunityId, setSelectedCommunityId] = useState("");
 	const [loadingCommunities, setLoadingCommunities] = useState(true);
+	const [showForm, setShowForm] = useState(false);
 
 	const [formData, setFormData] = useState<CommunityApplication>({
 		user_id: null,
@@ -23,28 +24,15 @@ export default function CommunityJoin() {
 		skills: [],
 		experience: "",
 	});
-	const [customSkill, setCustomSkill] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [success, setSuccess] = useState(false);
 	const [error, setError] = useState("");
-
-	const availableSkills = [
-		"event planning",
-		"cooking",
-		"music",
-		"teaching",
-		"social media",
-		"photography",
-		"decoration",
-		"fundraising",
-	];
 
 	// Fetch communities on mount
 	useEffect(() => {
 		const fetchCommunities = async () => {
 			try {
 				const data = await getCommunities();
-				// Ensure data is an array
 				if (Array.isArray(data)) {
 					setCommunities(data);
 				} else if (data && Array.isArray(data.communities)) {
@@ -52,7 +40,6 @@ export default function CommunityJoin() {
 				} else if (data && Array.isArray(data.data)) {
 					setCommunities(data.data);
 				} else {
-					console.error("Unexpected data format:", data);
 					setCommunities([]);
 				}
 			} catch (err) {
@@ -80,7 +67,6 @@ export default function CommunityJoin() {
 		try {
 			await submitCommunityApplication(selectedCommunityId, formData);
 			setSuccess(true);
-			// Reset form
 			setFormData({
 				user_id: null,
 				email: "",
@@ -92,6 +78,7 @@ export default function CommunityJoin() {
 				experience: "",
 			});
 			setSelectedCommunityId("");
+			setShowForm(false);
 			window.scrollTo({ top: 0, behavior: "smooth" });
 		} catch (err: any) {
 			setError(err.message || "Failed to submit application");
@@ -100,81 +87,148 @@ export default function CommunityJoin() {
 		}
 	};
 
-	const handleSkillToggle = (skill: string) => {
-		setFormData((prev) => ({
-			...prev,
-			skills: prev.skills.includes(skill)
-				? prev.skills.filter((s) => s !== skill)
-				: [...prev.skills, skill],
-		}));
-	};
-
-	const handleAddCustomSkill = () => {
-		if (customSkill.trim() && !formData.skills.includes(customSkill.trim())) {
-			setFormData((prev) => ({
-				...prev,
-				skills: [...prev.skills, customSkill.trim()],
-			}));
-			setCustomSkill("");
-		}
-	};
-
-	const handleRemoveSkill = (skill: string) => {
-		setFormData((prev) => ({
-			...prev,
-			skills: prev.skills.filter((s) => s !== skill),
-		}));
-	};
-
 	return (
 		<TempleLayout title="Join Our Community">
-			<div className="section section-padding">
+			{/* Hero Section */}
+			<div className="section section-padding bg-light">
 				<div className="container">
+					<div className="section-title text-center mb-5">
+						<p className="subtitle">Get Involved</p>
+						<h2 className="title">Join Our Temple Community</h2>
+						<p className="text-muted">
+							Be part of our spiritual family and contribute to our mission
+						</p>
+					</div>
+
 					{success && (
-						<div className="alert alert-success mb-4" role="alert">
+						<div className="alert alert-success mb-5" role="alert">
 							<h4 className="alert-heading">
+								<i className="fas fa-check-circle me-2"></i>
 								Application Submitted Successfully!
 							</h4>
-							<p>
+							<p className="mb-0">
 								Thank you for your interest in joining our community. We will
 								review your application and contact you soon.
 							</p>
 						</div>
 					)}
 
-					{error && (
-						<div className="alert alert-danger mb-4" role="alert">
-							<h4 className="alert-heading">Error</h4>
-							<p>{error}</p>
+					{/* Community Cards */}
+					<div className="row g-4 mb-5">
+						{/* Become a Volunteer Card */}
+						<div className="col-lg-4 col-md-6">
+							<div className="card h-100 shadow-sm border-0 text-center p-4 hover-lift">
+								<div className="card-body">
+									<div className="mb-4">
+										<i
+											className="flaticon-temple text-primary"
+											style={{ fontSize: "4rem" }}></i>
+									</div>
+									<h5 className="card-title text-primary mb-3">
+										Become a Volunteer
+									</h5>
+									<p className="card-text text-muted mb-4">
+										Join our team and serve the community with dedication
+									</p>
+									<a href="/volunteer-apply" className="sigma_btn-custom">
+										APPLY NOW
+									</a>
+								</div>
+							</div>
+						</div>
+
+						{/* Make a Donation Card */}
+						<div className="col-lg-4 col-md-6">
+							<div className="card h-100 shadow-sm border-0 text-center p-4 hover-lift">
+								<div className="card-body">
+									<div className="mb-4">
+										<i
+											className="flaticon-pooja text-primary"
+											style={{ fontSize: "4rem" }}></i>
+									</div>
+									<h5 className="card-title text-primary mb-3">
+										Make a Donation
+									</h5>
+									<p className="card-text text-muted mb-4">
+										Support our temple and charitable activities
+									</p>
+									<a href="/donation" className="sigma_btn-custom">
+										DONATE
+									</a>
+								</div>
+							</div>
+						</div>
+
+						{/* Contact Us Card */}
+						<div className="col-lg-4 col-md-6">
+							<div className="card h-100 shadow-sm border-0 text-center p-4 hover-lift">
+								<div className="card-body">
+									<div className="mb-4">
+										<i
+											className="flaticon-temple text-primary"
+											style={{ fontSize: "4rem" }}></i>
+									</div>
+									<h5 className="card-title text-primary mb-3">Contact Us</h5>
+									<p className="card-text text-muted mb-4">
+										Get in touch with our temple team
+									</p>
+									<a href="/contact-us" className="sigma_btn-custom">
+										CONTACT
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					{/* Join Community Button */}
+					{!showForm && (
+						<div className="text-center">
+							<button
+								onClick={() => setShowForm(true)}
+								className="sigma_btn-custom btn-lg">
+								<i className="fas fa-users me-2"></i>
+								Join a Community Group
+							</button>
 						</div>
 					)}
 
-					<div className="row">
-						<div className="col-lg-8 mx-auto">
-							<div className="sigma_form style-2">
-								<div className="section-title text-center">
-									<h4 className="title">Join Temple Community</h4>
-									<p>
-										Fill out the form below to apply for community membership
-									</p>
-								</div>
+					{/* Application Form */}
+					{showForm && (
+						<div className="row mt-5">
+							<div className="col-lg-8 mx-auto">
+								<div className="card shadow border-0">
+									<div className="card-body p-5">
+										<div className="text-center mb-4">
+											<h4 className="mb-2">Community Application Form</h4>
+											<p className="text-muted">
+												Fill out the form below to join a community
+											</p>
+										</div>
 
-								<form onSubmit={handleSubmit}>
-									<div className="row">
-										<div className="col-lg-12">
-											<div className="form-group">
-												<label>Select Community *</label>
+										{error && (
+											<div className="alert alert-danger" role="alert">
+												{error}
+											</div>
+										)}
+
+										<form onSubmit={handleSubmit}>
+											{/* Select Community */}
+											<div className="mb-4">
+												<label className="form-label fw-bold">
+													Select Community{" "}
+													<span className="text-danger">*</span>
+												</label>
 												{loadingCommunities ? (
-													<p>Loading communities...</p>
+													<p className="text-muted">Loading communities...</p>
 												) : (
 													<select
-														className="form-control"
+														className="form-select form-select-lg"
 														value={selectedCommunityId}
 														onChange={(e) =>
 															setSelectedCommunityId(e.target.value)
 														}
 														required>
-														<option value="">-- Select a Community --</option>
+														<option value="">-- Choose a Community --</option>
 														{Array.isArray(communities) &&
 														communities.length > 0 ? (
 															communities.map((community) => (
@@ -190,14 +244,16 @@ export default function CommunityJoin() {
 													</select>
 												)}
 											</div>
-										</div>
 
-										<div className="col-lg-12">
-											<div className="form-group">
-												<label>Full Name *</label>
+											{/* Name */}
+											<div className="mb-4">
+												<label className="form-label fw-bold">
+													Full Name <span className="text-danger">*</span>
+												</label>
 												<input
 													type="text"
-													placeholder="Your Full Name"
+													className="form-control form-control-lg"
+													placeholder="Enter your full name"
 													value={formData.name}
 													onChange={(e) =>
 														setFormData({ ...formData, name: e.target.value })
@@ -205,44 +261,57 @@ export default function CommunityJoin() {
 													required
 												/>
 											</div>
-										</div>
 
-										<div className="col-lg-6">
-											<div className="form-group">
-												<label>Email Address *</label>
-												<input
-													type="email"
-													placeholder="your.email@example.com"
-													value={formData.email}
-													onChange={(e) =>
-														setFormData({ ...formData, email: e.target.value })
-													}
-													required
-												/>
+											{/* Email & Phone */}
+											<div className="row mb-4">
+												<div className="col-md-6">
+													<label className="form-label fw-bold">
+														Email <span className="text-danger">*</span>
+													</label>
+													<input
+														type="email"
+														className="form-control form-control-lg"
+														placeholder="your.email@example.com"
+														value={formData.email}
+														onChange={(e) =>
+															setFormData({
+																...formData,
+																email: e.target.value,
+															})
+														}
+														required
+													/>
+												</div>
+												<div className="col-md-6">
+													<label className="form-label fw-bold">
+														Phone <span className="text-danger">*</span>
+													</label>
+													<input
+														type="tel"
+														className="form-control form-control-lg"
+														placeholder="+1-555-0123"
+														value={formData.phone}
+														onChange={(e) =>
+															setFormData({
+																...formData,
+																phone: e.target.value,
+															})
+														}
+														required
+													/>
+												</div>
 											</div>
-										</div>
 
-										<div className="col-lg-6">
-											<div className="form-group">
-												<label>Phone Number *</label>
-												<input
-													type="tel"
-													placeholder="+1-555-0123"
-													value={formData.phone}
-													onChange={(e) =>
-														setFormData({ ...formData, phone: e.target.value })
-													}
-													required
-												/>
-											</div>
-										</div>
-
-										<div className="col-lg-12">
-											<div className="form-group">
-												<label>Why do you want to join? *</label>
+											{/* Why Join */}
+											<div className="mb-4">
+												<label className="form-label fw-bold">
+													Why do you want to join?{" "}
+													<span className="text-danger">*</span>
+												</label>
 												<textarea
-													placeholder="To contribute to community service and spiritual growth"
-													rows={4}
+													className="form-control"
+													rows={3}
+													placeholder="Share your motivation for joining..."
 													value={formData.why_join}
 													onChange={(e) =>
 														setFormData({
@@ -252,14 +321,17 @@ export default function CommunityJoin() {
 													}
 													required></textarea>
 											</div>
-										</div>
 
-										<div className="col-lg-12">
-											<div className="form-group">
-												<label>Message *</label>
+											{/* Message */}
+											<div className="mb-4">
+												<label className="form-label fw-bold">
+													Additional Message{" "}
+													<span className="text-danger">*</span>
+												</label>
 												<textarea
-													placeholder="I would like to join this community to participate in temple activities and volunteer for events."
-													rows={4}
+													className="form-control"
+													rows={3}
+													placeholder="Tell us more about yourself..."
 													value={formData.message}
 													onChange={(e) =>
 														setFormData({
@@ -269,80 +341,17 @@ export default function CommunityJoin() {
 													}
 													required></textarea>
 											</div>
-										</div>
 
-										<div className="col-lg-12">
-											<div className="form-group">
-												<label>Your Skills (Select all that apply)</label>
-												<div className="row mb-3">
-													{availableSkills.map((skill) => (
-														<div key={skill} className="col-md-6 col-lg-4">
-															<div className="form-check">
-																<input
-																	className="form-check-input"
-																	type="checkbox"
-																	id={`skill-${skill}`}
-																	checked={formData.skills.includes(skill)}
-																	onChange={() => handleSkillToggle(skill)}
-																/>
-																<label
-																	className="form-check-label"
-																	htmlFor={`skill-${skill}`}>
-																	{skill}
-																</label>
-															</div>
-														</div>
-													))}
-												</div>
-
-												<div className="input-group">
-													<input
-														type="text"
-														className="form-control"
-														placeholder="Add custom skill"
-														value={customSkill}
-														onChange={(e) => setCustomSkill(e.target.value)}
-														onKeyPress={(e) =>
-															e.key === "Enter" &&
-															(e.preventDefault(), handleAddCustomSkill())
-														}
-													/>
-													<button
-														type="button"
-														className="btn btn-outline-secondary"
-														onClick={handleAddCustomSkill}>
-														Add
-													</button>
-												</div>
-
-												{formData.skills.length > 0 && (
-													<div className="mt-3">
-														<strong>Selected Skills:</strong>
-														<div className="d-flex flex-wrap gap-2 mt-2">
-															{formData.skills.map((skill) => (
-																<span key={skill} className="badge bg-primary">
-																	{skill}
-																	<button
-																		type="button"
-																		className="btn-close btn-close-white ms-2"
-																		style={{ fontSize: "0.6rem" }}
-																		onClick={() =>
-																			handleRemoveSkill(skill)
-																		}></button>
-																</span>
-															))}
-														</div>
-													</div>
-												)}
-											</div>
-										</div>
-
-										<div className="col-lg-12">
-											<div className="form-group">
-												<label>Previous Experience *</label>
+											{/* Experience */}
+											<div className="mb-4">
+												<label className="form-label fw-bold">
+													Previous Experience{" "}
+													<span className="text-danger">*</span>
+												</label>
 												<textarea
-													placeholder="5 years of volunteer experience at local temple"
-													rows={4}
+													className="form-control"
+													rows={3}
+													placeholder="Describe your relevant experience..."
 													value={formData.experience}
 													onChange={(e) =>
 														setFormData({
@@ -352,26 +361,50 @@ export default function CommunityJoin() {
 													}
 													required></textarea>
 											</div>
-										</div>
 
-										<div className="col-lg-12 text-center">
-											<button
-												type="submit"
-												className="sigma_btn-custom"
-												disabled={loading || !selectedCommunityId}>
-												{loading ? "Submitting..." : "Submit Application"}
-												{!loading && (
-													<i className="far fa-arrow-right ms-2"></i>
-												)}
-											</button>
-										</div>
+											{/* Buttons */}
+											<div className="d-flex gap-3 justify-content-center mt-5">
+												<button
+													type="button"
+													className="btn btn-outline-secondary btn-lg px-5"
+													onClick={() => setShowForm(false)}>
+													Cancel
+												</button>
+												<button
+													type="submit"
+													className="sigma_btn-custom btn-lg px-5"
+													disabled={loading || !selectedCommunityId}>
+													{loading ? (
+														<>
+															<span className="spinner-border spinner-border-sm me-2"></span>
+															Submitting...
+														</>
+													) : (
+														<>
+															Submit Application
+															<i className="far fa-arrow-right ms-2"></i>
+														</>
+													)}
+												</button>
+											</div>
+										</form>
 									</div>
-								</form>
+								</div>
 							</div>
 						</div>
-					</div>
+					)}
 				</div>
 			</div>
+
+			<style jsx>{`
+				.hover-lift {
+					transition: transform 0.3s ease, box-shadow 0.3s ease;
+				}
+				.hover-lift:hover {
+					transform: translateY(-10px);
+					box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+				}
+			`}</style>
 		</TempleLayout>
 	);
 }

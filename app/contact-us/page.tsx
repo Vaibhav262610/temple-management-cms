@@ -42,101 +42,141 @@ export default function ContactUs() {
 
 	return (
 		<TempleLayout title="Contact Us">
-			{/* Contact Info Section */}
-			<div className="section section-padding">
+			{/* Hero Section */}
+			<div className="section section-padding bg-light">
 				<div className="container">
+					<div className="section-title text-center mb-5">
+						<p className="subtitle">Get In Touch</p>
+						<h2 className="title">Contact Us</h2>
+						<p className="text-muted">
+							We'd love to hear from you. Reach out to us for any inquiries
+						</p>
+					</div>
+
 					{success && (
-						<div className="alert alert-success mb-4" role="alert">
-							<h4 className="alert-heading">Message Sent Successfully!</h4>
-							<p>
-								Thank you for contacting us. We will get back to you within 24
-								hours.
-							</p>
-						</div>
-					)}
-
-					{error && (
-						<div className="alert alert-danger mb-4" role="alert">
-							<h4 className="alert-heading">Error</h4>
-							<p>{error}</p>
-						</div>
-					)}
-
-					<div className="row">
-						<div className="col-lg-4">
-							<div className="sigma_icon-block icon-block-3 text-center">
-								<div className="icon-wrapper">
-									<i className="flaticon-temple"></i>
-								</div>
-								<div className="sigma_icon-block-content">
-									<h5>Visit Temple</h5>
-									<p>
-										1101 Foran Lane
-										<br />
-										Aurora, IL 60506
-										<br />
-										United States
+						<div className="alert alert-success mb-5 shadow-sm" role="alert">
+							<div className="d-flex align-items-center">
+								<i className="fas fa-check-circle fa-2x text-success me-3"></i>
+								<div>
+									<h4 className="alert-heading mb-2">
+										Message Sent Successfully!
+									</h4>
+									<p className="mb-0">
+										Thank you for contacting us. We will get back to you soon.
 									</p>
 								</div>
 							</div>
 						</div>
-						<div className="col-lg-4">
-							<div className="sigma_icon-block icon-block-3 text-center">
-								<div className="icon-wrapper">
-									<i className="flaticon-arti"></i>
+					)}
+
+					{error && (
+						<div className="alert alert-danger mb-5 shadow-sm" role="alert">
+							<div className="d-flex align-items-center">
+								<i className="fas fa-exclamation-circle fa-2x text-danger me-3"></i>
+								<div>
+									<h4 className="alert-heading mb-2">Error</h4>
+									<p className="mb-0">{error}</p>
 								</div>
-								<div className="sigma_icon-block-content">
-									<h5>Call Us</h5>
-									<p>
-										<a href="tel:+16308971500">+1 (630) 897-1500</a>
-										<br />
+							</div>
+						</div>
+					)}
+
+					{/* Contact Info Cards */}
+					<div className="row g-4 mb-5">
+						{/* Phone Card */}
+						<div className="col-lg-4 col-md-6">
+							<div className="card h-100 shadow-sm border-0 text-center p-4 hover-card">
+								<div className="card-body">
+									<div className="mb-4">
+										<i
+											className="fas fa-phone-alt text-primary"
+											style={{ fontSize: "3rem" }}></i>
+									</div>
+									<h5 className="card-title text-primary mb-3">Phone</h5>
+									<p className="card-text text-muted mb-2">
+										<a
+											href="tel:+16308971500"
+											className="text-decoration-none text-dark">
+											+1 (630) 897-1500
+										</a>
+									</p>
+									<p className="text-muted small">
 										Mon - Sun: 7:00 AM - 9:00 PM
 									</p>
 								</div>
 							</div>
 						</div>
-						<div className="col-lg-4">
-							<div className="sigma_icon-block icon-block-3 text-center">
-								<div className="icon-wrapper">
-									<i className="flaticon-pooja"></i>
-								</div>
-								<div className="sigma_icon-block-content">
-									<h5>Email Us</h5>
-									<p>
-										<a href="mailto:pr@saisamsthanusa.org">
+
+						{/* Email Card */}
+						<div className="col-lg-4 col-md-6">
+							<div className="card h-100 shadow-sm border-0 text-center p-4 hover-card">
+								<div className="card-body">
+									<div className="mb-4">
+										<i
+											className="fas fa-envelope text-primary"
+											style={{ fontSize: "3rem" }}></i>
+									</div>
+									<h5 className="card-title text-primary mb-3">Email</h5>
+									<p className="card-text text-muted mb-2">
+										<a
+											href="mailto:pr@saisamsthanusa.org"
+											className="text-decoration-none text-dark">
 											pr@saisamsthanusa.org
 										</a>
+									</p>
+									<p className="text-muted small">
+										We'll respond within 24 hours
+									</p>
+								</div>
+							</div>
+						</div>
+
+						{/* Address Card */}
+						<div className="col-lg-4 col-md-6">
+							<div className="card h-100 shadow-sm border-0 text-center p-4 hover-card">
+								<div className="card-body">
+									<div className="mb-4">
+										<i
+											className="fas fa-map-marker-alt text-primary"
+											style={{ fontSize: "3rem" }}></i>
+									</div>
+									<h5 className="card-title text-primary mb-3">Address</h5>
+									<p className="card-text text-muted mb-2">
+										1101 Foran Lane
 										<br />
-										We&apos;ll respond within 24 hours
+										Aurora, IL 60506
+										<br />
+										USA
 									</p>
 								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			</div>
 
-			{/* Contact Form Section */}
-			<div className="section pt-0 pb-0">
-				<div className="container">
+					{/* Contact Form */}
 					<div className="row">
-						<div className="col-lg-8">
-							<div className="sigma_form style-2">
-								<div className="section-title">
-									<h4 className="title">Send Us a Message</h4>
-									<p>
-										Have questions or need assistance? Fill out the form below
-										and we&apos;ll get back to you soon.
-									</p>
-								</div>
-								<form onSubmit={handleSubmit}>
-									<div className="row">
-										<div className="col-lg-6">
-											<div className="form-group">
-												<i className="far fa-user"></i>
+						<div className="col-lg-10 mx-auto">
+							<div className="card shadow border-0">
+								<div className="card-body p-5">
+									<div className="text-center mb-5">
+										<h4 className="mb-2">Send Us a Message</h4>
+										<p className="text-muted">
+											Fill out the form below and we'll get back to you as soon
+											as possible
+										</p>
+									</div>
+
+									<form onSubmit={handleSubmit}>
+										<div className="row g-4">
+											{/* Name */}
+											<div className="col-md-6">
+												<label className="form-label fw-bold">
+													Full Name <span className="text-danger">*</span>
+												</label>
 												<input
 													type="text"
-													placeholder="Full Name"
+													className="form-control form-control-lg"
+													placeholder="Enter your full name"
 													value={formData.name}
 													onChange={(e) =>
 														setFormData({ ...formData, name: e.target.value })
@@ -144,13 +184,16 @@ export default function ContactUs() {
 													required
 												/>
 											</div>
-										</div>
-										<div className="col-lg-6">
-											<div className="form-group">
-												<i className="far fa-envelope"></i>
+
+											{/* Email */}
+											<div className="col-md-6">
+												<label className="form-label fw-bold">
+													Email Address <span className="text-danger">*</span>
+												</label>
 												<input
 													type="email"
-													placeholder="Email Address"
+													className="form-control form-control-lg"
+													placeholder="your.email@example.com"
 													value={formData.email}
 													onChange={(e) =>
 														setFormData({ ...formData, email: e.target.value })
@@ -158,26 +201,32 @@ export default function ContactUs() {
 													required
 												/>
 											</div>
-										</div>
-										<div className="col-lg-6">
-											<div className="form-group">
-												<i className="far fa-phone"></i>
+
+											{/* Phone */}
+											<div className="col-md-6">
+												<label className="form-label fw-bold">
+													Phone Number
+												</label>
 												<input
-													type="text"
-													placeholder="Phone Number"
+													type="tel"
+													className="form-control form-control-lg"
+													placeholder="+1 555-123-4567"
 													value={formData.phone}
 													onChange={(e) =>
 														setFormData({ ...formData, phone: e.target.value })
 													}
 												/>
 											</div>
-										</div>
-										<div className="col-lg-6">
-											<div className="form-group">
-												<i className="far fa-pencil"></i>
+
+											{/* Subject */}
+											<div className="col-md-6">
+												<label className="form-label fw-bold">
+													Subject <span className="text-danger">*</span>
+												</label>
 												<input
 													type="text"
-													placeholder="Subject"
+													className="form-control form-control-lg"
+													placeholder="What is this regarding?"
 													value={formData.subject}
 													onChange={(e) =>
 														setFormData({
@@ -188,12 +237,16 @@ export default function ContactUs() {
 													required
 												/>
 											</div>
-										</div>
-										<div className="col-lg-12">
-											<div className="form-group">
+
+											{/* Message */}
+											<div className="col-12">
+												<label className="form-label fw-bold">
+													Message <span className="text-danger">*</span>
+												</label>
 												<textarea
-													placeholder="Enter Message"
+													className="form-control"
 													rows={6}
+													placeholder="Write your message here..."
 													value={formData.message}
 													onChange={(e) =>
 														setFormData({
@@ -203,88 +256,62 @@ export default function ContactUs() {
 													}
 													required></textarea>
 											</div>
+
+											{/* Submit Button */}
+											<div className="col-12 text-center pt-3">
+												<button
+													type="submit"
+													className="sigma_btn-custom btn-lg px-5"
+													disabled={loading}>
+													{loading ? (
+														<>
+															<span className="spinner-border spinner-border-sm me-2"></span>
+															Sending Message...
+														</>
+													) : (
+														<>
+															Send Message
+															<i className="far fa-paper-plane ms-2"></i>
+														</>
+													)}
+												</button>
+											</div>
 										</div>
-										<div className="col-lg-12">
-											<button
-												type="submit"
-												className="sigma_btn-custom"
-												disabled={loading}>
-												{loading ? "Sending..." : "Submit Message"}
-												{!loading && (
-													<i className="far fa-arrow-right ms-2"></i>
-												)}
-											</button>
-										</div>
-									</div>
-								</form>
+									</form>
+								</div>
 							</div>
 						</div>
-						<div className="col-lg-4">
-							<div className="sigma_info-wrapper style-26 ms-lg-4">
-								<h5>Temple Hours</h5>
-								<ul className="sigma_info style-1">
-									<li>
-										<strong>Monday - Friday</strong>
-										<span>7:00 AM - 9:00 PM</span>
-									</li>
-									<li>
-										<strong>Saturday - Sunday</strong>
-										<span>7:00 AM - 9:00 PM</span>
-									</li>
-									<li>
-										<strong>Morning Aarati</strong>
-										<span>8:00 AM Daily</span>
-									</li>
-									<li>
-										<strong>Evening Aarati</strong>
-										<span>7:00 PM Daily</span>
-									</li>
-								</ul>
-								<h5 className="mt-4">Follow Us</h5>
-								<ul className="sigma_sm square">
-									<li>
-										<a href="#">
-											<i className="fab fa-facebook-f"></i>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<i className="fab fa-twitter"></i>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<i className="fab fa-instagram"></i>
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<i className="fab fa-youtube"></i>
-										</a>
-									</li>
-								</ul>
+					</div>
+
+					{/* Map Section */}
+					<div className="row mt-5">
+						<div className="col-12">
+							<div className="card shadow border-0">
+								<div className="card-body p-0">
+									<iframe
+										src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2974.8157!2d-88.3200!3d41.7606!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDHCsDQ1JzM4LjIiTiA4OMKwMTknMTIuMCJX!5e0!3m2!1sen!2sus!4v1234567890"
+										width="100%"
+										height="450"
+										style={{ border: 0 }}
+										allowFullScreen
+										loading="lazy"
+										referrerPolicy="no-referrer-when-downgrade"></iframe>
+								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			{/* Map Section */}
-			<div className="section pt-0">
-				<div className="container-fluid">
-					<div className="row">
-						<div className="col-12">
-							<iframe
-								src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3000.123456789!2d-88.32!3d41.76!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDHCsDQ1JzM2LjAiTiA4OMKwMTknMTIuMCJX!5e0!3m2!1sen!2sus!4v1234567890"
-								width="100%"
-								height="450"
-								style={{ border: 0 }}
-								allowFullScreen
-								loading="lazy"></iframe>
-						</div>
-					</div>
-				</div>
-			</div>
+			<style jsx>{`
+				.hover-card {
+					transition: transform 0.3s ease, box-shadow 0.3s ease;
+				}
+				.hover-card:hover {
+					transform: translateY(-10px);
+					box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+				}
+			`}</style>
 		</TempleLayout>
 	);
 }

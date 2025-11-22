@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Script from "next/script";
 
 export const metadata: Metadata = {
-	title: "SHRI SHIRDI SAI BABA MANDIR",
+	title: "Saisamsthan - SHRI SHIRDI SAI BABA MANDIR",
 	description:
 		"Sabka Malik Ek – God is One. We are devotees of Shri Shirdi Sai Baba, following His teachings of love, compassion, and service to humanity.",
 };

@@ -126,21 +126,54 @@ export async function createCommunity(data: Community) {
 
 // Generic Contact Form
 export async function submitContactForm(data: ContactForm) {
-	// You can add this endpoint to your backend
-	const response = await fetch(`${API_URL}/contact`, {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-		},
-		body: JSON.stringify(data),
-	});
+	try {
+		// Try backend API first
+		try {
+			const response = await fetch(`${API_URL}/contact`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(data),
+			});
 
-	if (!response.ok) {
-		const error = await response.json();
-		throw new Error(error.message || 'Failed to submit contact form');
+			if (response.ok) {
+				return response.json();
+			}
+		} catch (apiError) {
+			console.warn('Backend API not available, using direct Supabase insert');
+		}
+
+		// Fallback to direct Supabase insert
+		const { data: insertedData, error } = await supabase
+			.from('cms_contact')
+			.insert([
+				{
+					name: data.name,
+					email: data.email,
+					phone: data.phone || null,
+					subject: data.subject,
+					message: data.message,
+					status: 'new',
+				},
+			])
+			.select()
+			.single();
+
+		if (error) {
+			console.error('Supabase insert error:', error);
+			throw new Error(error.message || 'Failed to submit contact form');
+		}
+
+		return {
+			success: true,
+			message: 'Contact form submitted successfully',
+			data: insertedData,
+		};
+	} catch (error: any) {
+		console.error('Contact form submission error:', error);
+		throw error;
 	}
-
-	return response.json();
 }
 
 // Generic Donation Form
